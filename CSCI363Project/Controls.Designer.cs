@@ -50,6 +50,7 @@
             pictureBox3 = new PictureBox();
             label3 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
+            timeZoneComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)driver2Box).BeginInit();
             ((System.ComponentModel.ISupportInitialize)addDriverBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)vehicle1Box).BeginInit();
@@ -252,7 +253,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(236, 5);
+            label3.Location = new Point(160, 7);
             label3.Name = "label3";
             label3.Size = new Size(38, 15);
             label3.TabIndex = 61;
@@ -263,12 +264,22 @@
             timer1.Interval = 1000;
             timer1.Tick += timer1_Tick;
             // 
+            // timeZoneComboBox
+            // 
+            timeZoneComboBox.FormattingEnabled = true;
+            timeZoneComboBox.Location = new Point(248, 3);
+            timeZoneComboBox.Name = "timeZoneComboBox";
+            timeZoneComboBox.Size = new Size(90, 23);
+            timeZoneComboBox.TabIndex = 62;
+            timeZoneComboBox.SelectedIndexChanged += timeZoneComboBox_SelectedIndexChanged;
+            // 
             // Controls
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(445, 560);
+            Controls.Add(timeZoneComboBox);
             Controls.Add(label3);
             Controls.Add(pictureBox1);
             Controls.Add(pictureBox2);
@@ -325,5 +336,6 @@
         private PictureBox pictureBox3;
         private Label label3;
         private System.Windows.Forms.Timer timer1;
+        private ComboBox timeZoneComboBox;
     }
 }

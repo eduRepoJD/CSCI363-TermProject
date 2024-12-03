@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static CSCI363Project.SettingsPage;
 
 namespace CSCI363Project
 {
@@ -19,6 +20,8 @@ namespace CSCI363Project
         private DriverInfo driver2;
         private vehicleInfo vehicle1;
         private vehicleInfo vehicle2;
+
+        private TimeZoneInfo selectedTimeZone = TimeZoneInfo.Local;
 
         public Controls()
         {
@@ -41,7 +44,26 @@ namespace CSCI363Project
 
         private void Controls_Load(object sender, EventArgs e)
         {
+            foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
+            {
+                timeZoneComboBox.Items.Add(tz.DisplayName);
+            }
+            TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
+            string localDisplayName = localTimeZone.DisplayName;
 
+            int localIndex = timeZoneComboBox.Items.IndexOf(localDisplayName);
+            if (localIndex != -1)
+            {
+                timeZoneComboBox.SelectedIndex = localIndex;
+            }
+
+            UpdateTimeLabel(localTimeZone);
+        }
+        private void UpdateTimeLabel(TimeZoneInfo timezone)
+        {
+            DateTime localTime = DateTime.Now;
+            DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, timezone);
+            label3.Text = convertedTime.ToString("hh:mm:ss tt");
         }
 
 
@@ -66,7 +88,15 @@ namespace CSCI363Project
         }
         private void addDriverBox_Click(object sender, EventArgs e)
         {
+            if (FeatureManager.featureStates["Alarm"])
+            {
 
+            }
+
+            else
+            {
+                MessageBox.Show("Add Driver Functionality is disabled");
+            }
         }
 
         private void vehicle1Box_Click(object sender, EventArgs e)
@@ -90,7 +120,15 @@ namespace CSCI363Project
 
         private void addVehicleBox_Click(object sender, EventArgs e)
         {
+            if (FeatureManager.featureStates["Alarm"])
+            {
 
+            }
+
+            else
+            {
+                MessageBox.Show("Add Vehicle Functionality is disabled");
+            }
         }
         public class DriverInfo
         {
@@ -127,7 +165,35 @@ namespace CSCI363Project
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            label3.Text = DateTime.Now.ToString("hh:mm:ss tt");
+            if (selectedTimeZone != null)
+            {
+                DateTime localTime = DateTime.Now;
+                DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, selectedTimeZone);
+                label3.Text = convertedTime.ToString("hh:mm:ss tt");
+            }
+        }
+
+        private void timeZoneComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (timeZoneComboBox.SelectedIndex != null)
+            {
+                string selectedTimeZoneName = timeZoneComboBox.SelectedItem.ToString();
+                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName);
+            }
+        }
+
+        public void SetFeatureAvailability(string feature, bool isEnabled)
+        {
+            switch (feature)
+            {
+                case "Add Driver":
+                    addDriverBox.Enabled = isEnabled;
+                    break;
+
+                case "Add Vehicle":
+                    addVehicleBox.Enabled = isEnabled;
+                    break;
+            }
         }
     }
 }
