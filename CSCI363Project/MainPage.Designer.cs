@@ -52,7 +52,6 @@
             dateTimePicker1 = new DateTimePicker();
             timer1 = new System.Windows.Forms.Timer(components);
             label6 = new Label();
-            timeZoneComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
@@ -182,7 +181,7 @@
             upWindowBox.Location = new Point(27, 270);
             upWindowBox.Name = "upWindowBox";
             upWindowBox.Size = new Size(57, 91);
-            upWindowBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            upWindowBox.SizeMode = PictureBoxSizeMode.Zoom;
             upWindowBox.TabIndex = 28;
             upWindowBox.TabStop = false;
             upWindowBox.Click += upWindowBox_Click;
@@ -206,7 +205,7 @@
             downWindowBox.Location = new Point(90, 270);
             downWindowBox.Name = "downWindowBox";
             downWindowBox.Size = new Size(55, 91);
-            downWindowBox.SizeMode = PictureBoxSizeMode.Zoom;
+            downWindowBox.SizeMode = PictureBoxSizeMode.StretchImage;
             downWindowBox.TabIndex = 26;
             downWindowBox.TabStop = false;
             downWindowBox.Click += downWindowBox_Click;
@@ -284,20 +283,11 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(163, 8);
+            label6.Location = new Point(205, 7);
             label6.Name = "label6";
             label6.Size = new Size(38, 15);
             label6.TabIndex = 41;
             label6.Text = "label6";
-            // 
-            // timeZoneComboBox
-            // 
-            timeZoneComboBox.FormattingEnabled = true;
-            timeZoneComboBox.Location = new Point(238, 3);
-            timeZoneComboBox.Name = "timeZoneComboBox";
-            timeZoneComboBox.Size = new Size(90, 23);
-            timeZoneComboBox.TabIndex = 42;
-            timeZoneComboBox.SelectedIndexChanged += timeZoneComboBox_SelectedIndexChanged;
             // 
             // MainPage
             // 
@@ -305,7 +295,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(441, 631);
-            Controls.Add(timeZoneComboBox);
             Controls.Add(label6);
             Controls.Add(dateTimePicker1);
             Controls.Add(settingsBox);
@@ -365,6 +354,5 @@
         private DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Timer timer1;
         private Label label6;
-        private ComboBox timeZoneComboBox;
     }
 }

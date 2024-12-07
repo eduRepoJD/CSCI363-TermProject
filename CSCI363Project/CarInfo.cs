@@ -7,58 +7,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CSCI363Project.SettingsPage;
 
 namespace CSCI363Project
 {
     public partial class CarInfo : Form
-
     {
-        private TimeZoneInfo selectedTimeZone = TimeZoneInfo.Local;
         public CarInfo()
         {
             InitializeComponent();
-
+            ApplyCurrentTheme();
             timer1.Interval = 1000;
             timer1.Start();
         }
 
+        private void ApplyCurrentTheme()
+        {
+            this.BackColor = ThemeManager.CurrentBackColor;
+            foreach (Control ctrl in Controls)
+            {
+                if (ctrl is TextBox)
+                {
+                    TextBox textBox = (TextBox)ctrl;
+                    textBox.BackColor = ThemeManager.CurrentTextBoxBackColor;
+                    textBox.ForeColor = ThemeManager.CurrentTextBoxForeColor;
+                }
+            }
+        }
+
         private void CarInfo_Load(object sender, EventArgs e)
         {
-            foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
-            {
-                timeZoneComboBox.Items.Add(tz.DisplayName);
-            }
-            TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
-            string localDisplayName = localTimeZone.DisplayName;
-
-            int localIndex = timeZoneComboBox.Items.IndexOf(localDisplayName);
-            if (localIndex != -1)
-            {
-                timeZoneComboBox.SelectedIndex = localIndex;
-            }
-
-            UpdateTimeLabel(localTimeZone);
+            // Initialization code for when the form loads
         }
-        private void UpdateTimeLabel(TimeZoneInfo timezone)
-        {
-            DateTime localTime = DateTime.Now;
-            DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, timezone);
-            label11.Text = convertedTime.ToString("hh:mm:ss tt");
-        }
-
 
         private void updateGPSBox_Click(object sender, EventArgs e)
         {
-            if (FeatureManager.featureStates["Alarm"])
-            {
-                MessageBox.Show("GPS has been updated");
-            }
-
-            else
-            {
-                MessageBox.Show("GPS Functionality is disabled");
-            }
+            MessageBox.Show("GPS has been updated");
         }
 
         private void mainBox_Click(object sender, EventArgs e)
@@ -67,7 +50,6 @@ namespace CSCI363Project
             MainPage mainPage = new MainPage();
             mainPage.Show();
         }
-
 
         private void controlsBox_Click(object sender, EventArgs e)
         {
@@ -85,29 +67,7 @@ namespace CSCI363Project
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (selectedTimeZone != null)
-            {
-                DateTime localTime = DateTime.Now;
-                DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, selectedTimeZone);
-                label11.Text = convertedTime.ToString("hh:mm:ss tt");
-            }
-        }
-
-        private void timeZoneComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (timeZoneComboBox.SelectedIndex != null)
-            {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem.ToString();
-                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName);
-            }
-        }
-
-        public void SetFeatureAvailability(string feature, bool isEnabled)
-        {
-            if (feature == "GPS")
-            {
-                updateGPSBox.Enabled = isEnabled;
-            }
+            label11.Text = DateTime.Now.ToString("hh:mm:ss tt");
         }
     }
 }

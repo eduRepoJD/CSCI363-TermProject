@@ -52,7 +52,6 @@
             pictureBox3 = new PictureBox();
             label4 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
-            timeZoneComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)updateAppBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nightTimeBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dayTimeBox).BeginInit();
@@ -109,7 +108,6 @@
             // 
             // nightTimeBox
             // 
-            nightTimeBox.BorderStyle = BorderStyle.Fixed3D;
             nightTimeBox.Image = (Image)resources.GetObject("nightTimeBox.Image");
             nightTimeBox.Location = new Point(333, 325);
             nightTimeBox.Name = "nightTimeBox";
@@ -121,7 +119,6 @@
             // 
             // dayTimeBox
             // 
-            dayTimeBox.BorderStyle = BorderStyle.Fixed3D;
             dayTimeBox.Image = (Image)resources.GetObject("dayTimeBox.Image");
             dayTimeBox.Location = new Point(141, 329);
             dayTimeBox.Name = "dayTimeBox";
@@ -178,7 +175,6 @@
             checkedListBox1.Name = "checkedListBox1";
             checkedListBox1.Size = new Size(420, 158);
             checkedListBox1.TabIndex = 44;
-            checkedListBox1.ItemCheck += checkedListBox1_ItemCheck;
             // 
             // settingsBox
             // 
@@ -265,7 +261,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(163, 7);
+            label4.Location = new Point(234, 4);
             label4.Name = "label4";
             label4.Size = new Size(38, 15);
             label4.TabIndex = 61;
@@ -276,22 +272,12 @@
             timer1.Interval = 1000;
             timer1.Tick += timer1_Tick;
             // 
-            // timeZoneComboBox
-            // 
-            timeZoneComboBox.FormattingEnabled = true;
-            timeZoneComboBox.Location = new Point(245, 3);
-            timeZoneComboBox.Name = "timeZoneComboBox";
-            timeZoneComboBox.Size = new Size(90, 23);
-            timeZoneComboBox.TabIndex = 62;
-            timeZoneComboBox.SelectedIndexChanged += timeZoneComboBox_SelectedIndexChanged;
-            // 
             // SettingsPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(443, 654);
-            Controls.Add(timeZoneComboBox);
             Controls.Add(label4);
             Controls.Add(pictureBox1);
             Controls.Add(pictureBox2);
@@ -315,7 +301,6 @@
             Controls.Add(panel1);
             Name = "SettingsPage";
             Text = "SettingsPage";
-            Load += SettingsPage_Load_1;
             ((System.ComponentModel.ISupportInitialize)updateAppBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)nightTimeBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)dayTimeBox).EndInit();
@@ -349,6 +334,5 @@
         private PictureBox pictureBox3;
         private Label label4;
         private System.Windows.Forms.Timer timer1;
-        private ComboBox timeZoneComboBox;
     }
 }

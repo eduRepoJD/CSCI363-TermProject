@@ -58,8 +58,6 @@
             pictureBox4 = new PictureBox();
             label11 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
-            textBox1 = new TextBox();
-            timeZoneComboBox = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)updateGPSBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -231,20 +229,18 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 12F);
             label6.Location = new Point(28, 415);
             label6.Name = "label6";
-            label6.Size = new Size(154, 21);
+            label6.Size = new Size(116, 15);
             label6.TabIndex = 53;
             label6.Text = "Internal Temperature";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 12F);
             label7.Location = new Point(28, 445);
             label7.Name = "label7";
-            label7.Size = new Size(156, 21);
+            label7.Size = new Size(118, 15);
             label7.TabIndex = 54;
             label7.Text = "External Temperature";
             // 
@@ -254,9 +250,9 @@
             label8.Font = new Font("Segoe UI", 20F);
             label8.Location = new Point(330, 397);
             label8.Name = "label8";
-            label8.Size = new Size(57, 37);
+            label8.Size = new Size(47, 37);
             label8.TabIndex = 55;
-            label8.Text = "70°";
+            label8.Text = "70";
             // 
             // label9
             // 
@@ -264,9 +260,9 @@
             label9.Font = new Font("Segoe UI", 20F);
             label9.Location = new Point(330, 434);
             label9.Name = "label9";
-            label9.Size = new Size(57, 37);
+            label9.Size = new Size(47, 37);
             label9.TabIndex = 56;
-            label9.Text = "82°";
+            label9.Text = "82";
             // 
             // label10
             // 
@@ -319,7 +315,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(159, 7);
+            label11.Location = new Point(224, 5);
             label11.Name = "label11";
             label11.Size = new Size(44, 15);
             label11.TabIndex = 62;
@@ -330,35 +326,12 @@
             timer1.Interval = 1000;
             timer1.Tick += timer1_Tick;
             // 
-            // textBox1
-            // 
-            textBox1.BackColor = SystemColors.Control;
-            textBox1.Font = new Font("Segoe UI", 11F);
-            textBox1.Location = new Point(17, 224);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ScrollBars = ScrollBars.Both;
-            textBox1.Size = new Size(412, 144);
-            textBox1.TabIndex = 63;
-            textBox1.Text = resources.GetString("textBox1.Text");
-            // 
-            // timeZoneComboBox
-            // 
-            timeZoneComboBox.FormattingEnabled = true;
-            timeZoneComboBox.Location = new Point(247, 3);
-            timeZoneComboBox.Name = "timeZoneComboBox";
-            timeZoneComboBox.Size = new Size(90, 23);
-            timeZoneComboBox.TabIndex = 64;
-            timeZoneComboBox.SelectedIndexChanged += timeZoneComboBox_SelectedIndexChanged;
-            // 
             // CarInfo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(441, 650);
-            Controls.Add(timeZoneComboBox);
-            Controls.Add(textBox1);
             Controls.Add(label11);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox3);
@@ -428,7 +401,5 @@
         private PictureBox pictureBox4;
         private Label label11;
         private System.Windows.Forms.Timer timer1;
-        private TextBox textBox1;
-        private ComboBox timeZoneComboBox;
     }
 }

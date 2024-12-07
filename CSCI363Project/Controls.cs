@@ -9,19 +9,18 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CSCI363Project.SettingsPage;
+using System;
+using System.Windows.Forms;
+using System;
 
 namespace CSCI363Project
 {
     public partial class Controls : Form
     {
-
         private DriverInfo driver1;
         private DriverInfo driver2;
         private vehicleInfo vehicle1;
         private vehicleInfo vehicle2;
-
-        private TimeZoneInfo selectedTimeZone = TimeZoneInfo.Local;
 
         public Controls()
         {
@@ -31,6 +30,7 @@ namespace CSCI363Project
             timer1.Interval = 1000;
             timer1.Start();
 
+            ApplyCurrentTheme(); // Ensure the theme is applied when the form is created
         }
 
         public void InitializeDefaults()
@@ -44,34 +44,26 @@ namespace CSCI363Project
 
         private void Controls_Load(object sender, EventArgs e)
         {
-            foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
-            {
-                timeZoneComboBox.Items.Add(tz.DisplayName);
-            }
-            TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
-            string localDisplayName = localTimeZone.DisplayName;
-
-            int localIndex = timeZoneComboBox.Items.IndexOf(localDisplayName);
-            if (localIndex != -1)
-            {
-                timeZoneComboBox.SelectedIndex = localIndex;
-            }
-
-            UpdateTimeLabel(localTimeZone);
         }
-        private void UpdateTimeLabel(TimeZoneInfo timezone)
+
+        private void ApplyCurrentTheme()
         {
-            DateTime localTime = DateTime.Now;
-            DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, timezone);
-            label3.Text = convertedTime.ToString("hh:mm:ss tt");
+            this.BackColor = ThemeManager.CurrentBackColor;
+            foreach (Control ctrl in Controls)
+            {
+                if (ctrl is TextBox)
+                {
+                    TextBox textBox = (TextBox)ctrl;
+                    textBox.BackColor = ThemeManager.CurrentTextBoxBackColor;
+                    textBox.ForeColor = ThemeManager.CurrentTextBoxForeColor;
+                }
+            }
         }
-
 
         private void driver1Box_Click(object sender, EventArgs e)
         {
             string info = $"Driver 1: {driver1.Name} Age: {driver1.Age}";
             MessageBox.Show(info, "Driver 1 Information");
-
         }
 
         private void driver2Box_Click(object sender, EventArgs e)
@@ -86,17 +78,9 @@ namespace CSCI363Project
                 MessageBox.Show(info, "Driver 2 Information");
             }
         }
+
         private void addDriverBox_Click(object sender, EventArgs e)
         {
-            if (FeatureManager.featureStates["Alarm"])
-            {
-
-            }
-
-            else
-            {
-                MessageBox.Show("Add Driver Functionality is disabled");
-            }
         }
 
         private void vehicle1Box_Click(object sender, EventArgs e)
@@ -120,16 +104,8 @@ namespace CSCI363Project
 
         private void addVehicleBox_Click(object sender, EventArgs e)
         {
-            if (FeatureManager.featureStates["Alarm"])
-            {
-
-            }
-
-            else
-            {
-                MessageBox.Show("Add Vehicle Functionality is disabled");
-            }
         }
+
         public class DriverInfo
         {
             public string Name { get; set; }
@@ -142,6 +118,7 @@ namespace CSCI363Project
             public string Model { get; set; }
             public int Year { get; set; }
         }
+
         private void mainBox_Click(object sender, EventArgs e)
         {
             this.Hide();
@@ -165,35 +142,7 @@ namespace CSCI363Project
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (selectedTimeZone != null)
-            {
-                DateTime localTime = DateTime.Now;
-                DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, selectedTimeZone);
-                label3.Text = convertedTime.ToString("hh:mm:ss tt");
-            }
-        }
-
-        private void timeZoneComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (timeZoneComboBox.SelectedIndex != null)
-            {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem.ToString();
-                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName);
-            }
-        }
-
-        public void SetFeatureAvailability(string feature, bool isEnabled)
-        {
-            switch (feature)
-            {
-                case "Add Driver":
-                    addDriverBox.Enabled = isEnabled;
-                    break;
-
-                case "Add Vehicle":
-                    addVehicleBox.Enabled = isEnabled;
-                    break;
-            }
+            label3.Text = DateTime.Now.ToString("hh:mm:ss tt");
         }
     }
 }
