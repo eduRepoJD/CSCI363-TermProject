@@ -21,6 +21,23 @@ namespace CSCI363Project
 
             timer1.Interval = 1000;
             timer1.Start();
+            ApplyCurrentTheme();
+        }
+
+        private void ApplyCurrentTheme()
+        {
+            this.BackColor = ThemeManager.CurrentBackColor;
+            label4.ForeColor = ThemeManager.CurrentLabelColor;
+
+            foreach (Control ctrl in Controls)
+            {
+                if (ctrl is TextBox)
+                {
+                    TextBox textBox = (TextBox)ctrl;
+                    textBox.BackColor = ThemeManager.CurrentTextBoxBackColor;
+                    textBox.ForeColor = ThemeManager.CurrentTextBoxForeColor;
+                }
+            }
         }
 
 
@@ -43,17 +60,26 @@ namespace CSCI363Project
 
         private void updateAppBox_Click(object sender, EventArgs e)
         {
+            ApplyCurrentTheme();
             MessageBox.Show("Application has restarted");
         }
 
         private void dayTimeBox_Click(object sender, EventArgs e)
         {
-
+            ThemeManager.CurrentBackColor = Color.White;
+            ThemeManager.CurrentLabelColor = Color.Black;
+            ThemeManager.CurrentTextBoxBackColor = Color.White;
+            ThemeManager.CurrentTextBoxForeColor = Color.Black;
+            ApplyCurrentTheme();
         }
 
         private void nightTimeBox_Click(object sender, EventArgs e)
         {
-
+            ThemeManager.CurrentBackColor = Color.DimGray;  // Darker grey
+            ThemeManager.CurrentLabelColor = Color.White;
+            ThemeManager.CurrentTextBoxBackColor = Color.Gray;
+            ThemeManager.CurrentTextBoxForeColor = Color.White;
+            ApplyCurrentTheme();
         }
 
         private void mainBox_Click(object sender, EventArgs e)
@@ -89,10 +115,12 @@ namespace CSCI363Project
 
         private void timeZoneComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (timeZoneComboBox.SelectedIndex != null)
+            if (timeZoneComboBox.SelectedIndex >= 0)
             {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem.ToString();
-                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName);
+                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString();
+                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones()
+                                               .FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName)
+                                               ?? TimeZoneInfo.Local;
             }
         }
 

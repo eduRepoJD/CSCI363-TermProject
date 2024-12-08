@@ -18,9 +18,23 @@ namespace CSCI363Project
         public CarInfo()
         {
             InitializeComponent();
-
+            ApplyCurrentTheme();
             timer1.Interval = 1000;
             timer1.Start();
+        }
+
+        private void ApplyCurrentTheme()
+        {
+            this.BackColor = ThemeManager.CurrentBackColor;
+            foreach (Control ctrl in Controls)
+            {
+                if (ctrl is TextBox)
+                {
+                    TextBox textBox = (TextBox)ctrl;
+                    textBox.BackColor = ThemeManager.CurrentTextBoxBackColor;
+                    textBox.ForeColor = ThemeManager.CurrentTextBoxForeColor;
+                }
+            }
         }
 
         private void CarInfo_Load(object sender, EventArgs e)
@@ -95,11 +109,14 @@ namespace CSCI363Project
 
         private void timeZoneComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (timeZoneComboBox.SelectedIndex != null)
+            if (timeZoneComboBox.SelectedIndex >= 0)
             {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem.ToString();
-                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName);
+                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString() ?? string.Empty;
+                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones()
+                                               .FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName)
+                                               ?? TimeZoneInfo.Local;
             }
+
         }
 
         public void SetFeatureAvailability(string feature, bool isEnabled)

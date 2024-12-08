@@ -19,11 +19,27 @@ namespace CSCI363Project
         {
             InitializeComponent();
             this.Load += MainPage_Load;
-
+            ApplyCurrentTheme();
 
             timer1.Interval = 1000;
             //timer1.Tick += timer1_Tick;
             timer1.Start();
+        }
+
+        private void ApplyCurrentTheme()
+        {
+            this.BackColor = ThemeManager.CurrentBackColor;
+            label6.ForeColor = ThemeManager.CurrentLabelColor;
+
+            foreach (Control ctrl in Controls)
+            {
+                if (ctrl is TextBox)
+                {
+                    TextBox textBox = (TextBox)ctrl;
+                    textBox.BackColor = ThemeManager.CurrentTextBoxBackColor;
+                    textBox.ForeColor = ThemeManager.CurrentTextBoxForeColor;
+                }
+            }
         }
 
         private void MainPage_Load(object sender, EventArgs e)
@@ -179,10 +195,12 @@ namespace CSCI363Project
 
         private void timeZoneComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (timeZoneComboBox.SelectedIndex != null)
+            if (timeZoneComboBox.SelectedIndex >= 0)
             {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem.ToString();
-                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName);
+                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString();
+                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones()
+                                               .FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName)
+                                               ?? TimeZoneInfo.Local;
             }
         }
 
