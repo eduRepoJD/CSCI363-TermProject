@@ -9,208 +9,362 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CSCI363Project.SettingsPage;
 
 namespace CSCI363Project
 {
     public partial class Controls : Form
     {
-
-        private DriverInfo driver1;
-        private DriverInfo driver2;
-        private vehicleInfo vehicle1;
-        private vehicleInfo vehicle2;
-
-        private TimeZoneInfo selectedTimeZone = TimeZoneInfo.Local;
-
         public Controls()
         {
             InitializeComponent();
-            InitializeDefaults();
-
-            timer1.Interval = 1000;
             timer1.Start();
-            ApplyCurrentTheme(); // Ensure the theme is applied when the form is created
-        }
-
-        public void InitializeDefaults()
-        {
-            driver1 = new DriverInfo { Name = "Gavin Carlson", Age = 21 };
-            driver2 = new DriverInfo { Name = "", Age = 0 };
-
-            vehicle1 = new vehicleInfo { Make = "Ford", Model = "Raptor", Year = 2021 };
-            vehicle2 = new vehicleInfo { Make = "", Model = "", Year = 0 };
         }
 
         private void Controls_Load(object sender, EventArgs e)
         {
-            foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
-            {
-                timeZoneComboBox.Items.Add(tz.DisplayName);
-            }
-            TimeZoneInfo localTimeZone = TimeZoneInfo.Local;
-            string localDisplayName = localTimeZone.DisplayName;
-
-            int localIndex = timeZoneComboBox.Items.IndexOf(localDisplayName);
-            if (localIndex != -1)
-            {
-                timeZoneComboBox.SelectedIndex = localIndex;
-            }
-
-            UpdateTimeLabel(localTimeZone);
+            RefreshDriverIcons();
+            RefreshVehicleIcons();
         }
 
-        private void ApplyCurrentTheme()
+        private void timer1_Tick(object? sender, EventArgs e)
         {
-            this.BackColor = ThemeManager.CurrentBackColor;
-            foreach (Control ctrl in Controls)
-            {
-                if (ctrl is TextBox)
-                {
-                    TextBox textBox = (TextBox)ctrl;
-                    textBox.BackColor = ThemeManager.CurrentTextBoxBackColor;
-                    textBox.ForeColor = ThemeManager.CurrentTextBoxForeColor;
-                }
-            }
-        }
-        private void UpdateTimeLabel(TimeZoneInfo timezone)
-        {
-            DateTime localTime = DateTime.Now;
-            DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, timezone);
-            label3.Text = convertedTime.ToString("hh:mm:ss tt");
+            labelTime.Text = DateTime.Now.ToString("hh:mm:ss tt");
         }
 
-
-        private void driver1Box_Click(object sender, EventArgs e)
+        private void btnMain_Click(object? sender, EventArgs e)
         {
-            string info = $"Driver 1: {driver1.Name} Age: {driver1.Age}";
-            MessageBox.Show(info, "Driver 1 Information");
-
-        }
-
-        private void driver2Box_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(driver2.Name))
-            {
-                MessageBox.Show("Driver 2 information is not available");
-            }
-            else
-            {
-                string info = $"Driver 2: {driver2.Name} Age: {driver2.Age}";
-                MessageBox.Show(info, "Driver 2 Information");
-            }
-        }
-        private void addDriverBox_Click(object sender, EventArgs e)
-        {
-            if (FeatureManager.featureStates["Alarm"])
-            {
-
-            }
-
-            else
-            {
-                MessageBox.Show("Add Driver Functionality is disabled");
-            }
-        }
-
-        private void vehicle1Box_Click(object sender, EventArgs e)
-        {
-            string info = $"Vehicle 1: {vehicle1.Make}, Model: {vehicle1.Model}, Year: {vehicle1.Year}";
-            MessageBox.Show(info, "Vehicle 1 Information");
-        }
-
-        private void vehicle2Box_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(vehicle2.Make))
-            {
-                MessageBox.Show("Vehicle 2 information is not available");
-            }
-            else
-            {
-                string info = $"Vehicle 2: {vehicle2.Make} , Model:  {vehicle2.Model} , Year:  {vehicle2.Year}";
-                MessageBox.Show(info, "Vehicle 2 Information");
-            }
-        }
-
-        private void addVehicleBox_Click(object sender, EventArgs e)
-        {
-            if (FeatureManager.featureStates["Alarm"])
-            {
-
-            }
-
-            else
-            {
-                MessageBox.Show("Add Vehicle Functionality is disabled");
-            }
-        }
-        public class DriverInfo
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
-        }
-
-        public class vehicleInfo
-        {
-            public string Make { get; set; }
-            public string Model { get; set; }
-            public int Year { get; set; }
-        }
-        private void mainBox_Click(object sender, EventArgs e)
-        {
-            this.Hide();
             MainPage mainPage = new MainPage();
             mainPage.Show();
+            this.Close();
         }
 
-        private void carInfoBox_Click(object sender, EventArgs e)
+        private void btnControls_Click(object? sender, EventArgs e)
         {
-            this.Hide();
-            CarInfo carInfoForm = new CarInfo();
-            carInfoForm.Show();
+            // Already on Controls, no action needed
         }
 
-        private void settingsBox_Click(object sender, EventArgs e)
+        private void btnCarInfo_Click(object? sender, EventArgs e)
         {
-            this.Hide();
-            SettingsPage settingsForm = new SettingsPage();
-            settingsForm.Show();
+            CarInfo carInfo = new CarInfo();
+            carInfo.Show();
+            this.Close();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void btnSettings_Click(object? sender, EventArgs e)
         {
-            if (selectedTimeZone != null)
+            SettingsPage settingsPage = new SettingsPage();
+            settingsPage.Show();
+            this.Close();
+        }
+
+        private void RefreshDriverIcons()
+        {
+            flowLayoutDrivers.Controls.Clear();
+
+            for (int i = 0; i < DataManager.Drivers.Count; i++)
             {
-                DateTime localTime = DateTime.Now;
-                DateTime convertedTime = TimeZoneInfo.ConvertTime(localTime, selectedTimeZone);
-                label3.Text = convertedTime.ToString("hh:mm:ss tt");
+                var driver = DataManager.Drivers[i];
+                Panel driverPanel = new Panel
+                {
+                    Size = new Size(100, 100),
+                    BorderStyle = BorderStyle.Fixed3D,
+                };
+
+                var driverLabel = new System.Windows.Forms.Label
+                {
+                    Text = $"{driver.DriverName}\nAge: {driver.DriverAge}",
+                    AutoSize = false,
+                    Font = new Font("Segoe UI", 10F), 
+                    ForeColor = Color.Black, 
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Size = new Size(100, 70), 
+                    Location = new Point(0,0) 
+                };
+
+
+                Button editButton = new Button
+                {
+                    Text = "Edit",
+                    Size = new Size(50, 20),
+                    Location = new Point(-1, 75),
+                    Tag = i // Attach index as Tag
+                };
+                editButton.Click += (s, e) =>
+                {
+                    if (editButton.Tag is int index) // Null-safe unboxing
+                    {
+                        EditDriver(index);
+                    }
+                };
+
+                Button deleteButton = new Button
+                {
+                    Text = "Delete",
+                    Size = new Size(50, 20),
+                    Location = new Point(47, 75),
+                    Tag = i // Attach index as Tag
+                };
+                deleteButton.Click += (s, e) =>
+                {
+                    if (deleteButton.Tag is int index) // Null-safe unboxing
+                    {
+                        DeleteDriver(index);
+                    }
+                };
+
+                driverPanel.Controls.Add(driverLabel);
+                driverPanel.Controls.Add(editButton);
+                driverPanel.Controls.Add(deleteButton);
+
+                flowLayoutDrivers.Controls.Add(driverPanel);
+            }
+
+            Button addDriverButton = new Button
+            {
+                Text = "+",
+                Font = new Font("Segoe UI", 30F),
+                AutoSize = true,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(50, 50)
+            };
+            addDriverButton.Click += AddDriverButton_Click;
+            flowLayoutDrivers.Controls.Add(addDriverButton);
+        }
+
+        private void RefreshVehicleIcons()
+        {
+            flowLayoutVehicles.Controls.Clear();
+
+            for (int i = 0; i < DataManager.Vehicles.Count; i++)
+            {
+                var vehicle = DataManager.Vehicles[i];
+                Panel vehiclePanel = new Panel
+                {
+                    Size = new Size(100, 100),
+                    BorderStyle = BorderStyle.Fixed3D
+                };
+
+                var vehicleLabel = new System.Windows.Forms.Label
+                {
+                    Text = $"{vehicle.Make} {vehicle.Model}\nYear: {vehicle.Year}",
+                    AutoSize = false,
+                    Font = new Font("Segoe UI", 10F),
+                    ForeColor = Color.Black,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Size = new Size(100, 70),
+                    Location = new Point(0, 0)
+                };
+
+                Button editButton = new Button
+                {
+                    Text = "Edit",
+                    Size = new Size(50, 20),
+                    Location = new Point(-1, 75),
+                    Tag = i // Attach index as Tag
+                };
+                editButton.Click += (s, e) =>
+                {
+                    if (editButton.Tag is int index) // Null-safe unboxing
+                    {
+                        EditVehicle(index);
+                    }
+                };
+
+                Button deleteButton = new Button
+                {
+                    Text = "Delete",
+                    Size = new Size(50, 20),
+                    Location = new Point(47, 75),
+                    Tag = i // Attach index as Tag
+                };
+                deleteButton.Click += (s, e) =>
+                {
+                    if (deleteButton.Tag is int index) // Null-safe unboxing
+                    {
+                        DeleteVehicle(index);
+                    }
+                };
+
+                vehiclePanel.Controls.Add(vehicleLabel);
+                vehiclePanel.Controls.Add(editButton);
+                vehiclePanel.Controls.Add(deleteButton);
+
+                flowLayoutVehicles.Controls.Add(vehiclePanel);
+            }
+
+            Button addVehicleButton = new Button
+            {
+                Text = "+",
+                Font = new Font("Segoe UI", 30F),
+                AutoSize = true,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(50, 50)
+            };
+            addVehicleButton.Click += AddVehicleButton_Click;
+            flowLayoutVehicles.Controls.Add(addVehicleButton);
+        }
+
+        private void AddDriverButton_Click(object? sender, EventArgs e)
+        {
+            DriverInfo driverForm = new DriverInfo();
+            driverForm.ShowDialog();
+
+            if (driverForm.IsSaved)
+            {
+                DataManager.AddDriver(new DriverInfo
+                {
+                    DriverName = driverForm.DriverName,
+                    DriverAge = driverForm.DriverAge
+                });
+
+                RefreshDriverIcons();
             }
         }
 
-        private void timeZoneComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void AddVehicleButton_Click(object? sender, EventArgs e)
         {
-            if (timeZoneComboBox.SelectedIndex >= 0)
+            VehicleInfo vehicleForm = new VehicleInfo();
+            vehicleForm.ShowDialog();
+
+            if (vehicleForm.IsSaved)
             {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString();
-                selectedTimeZone = TimeZoneInfo.GetSystemTimeZones()
-                                               .FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName)
-                                               ?? TimeZoneInfo.Local;
+                DataManager.AddVehicle(new VehicleInfo
+                {
+                    Make = vehicleForm.Make,
+                    Model = vehicleForm.Model,
+                    Year = vehicleForm.Year
+                });
+
+                RefreshVehicleIcons();
             }
         }
 
+        private void EditDriver(int index)
+        {
+            if (index < 0 || index >= DataManager.Drivers.Count)
+            {
+                MessageBox.Show("Invalid driver selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DriverInfo driverForm = new DriverInfo();
+            // Pass existing data to the DriverInfo form
+            driverForm.SetDriverInfo(
+                DataManager.Drivers[index].DriverName ?? string.Empty,
+                DataManager.Drivers[index].DriverAge ?? 0
+            );
+            driverForm.ShowDialog();
+
+            if (driverForm.IsSaved)
+            {
+                // Update the driver information in DataManager
+                DataManager.UpdateDriver(index, new DriverInfo
+                {
+                    DriverName = driverForm.DriverName,
+                    DriverAge = driverForm.DriverAge
+                });
+
+                RefreshDriverIcons();
+            }
+        }
+
+
+        private void DeleteDriver(int index)
+        {
+            if (index < 0 || index >= DataManager.Drivers.Count)
+            {
+                MessageBox.Show("Invalid driver selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var result = MessageBox.Show("Are you sure you want to delete this driver?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                DataManager.RemoveDriver(index);
+                RefreshDriverIcons();
+            }
+        }
+
+        private void EditVehicle(int index)
+        {
+            if (index < 0 || index >= DataManager.Vehicles.Count)
+            {
+                MessageBox.Show("Invalid vehicle selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            VehicleInfo vehicleForm = new VehicleInfo();
+            // Pass existing data to the VehicleInfo form
+            vehicleForm.SetVehicleInfo(
+                DataManager.Vehicles[index].Make ?? string.Empty,
+                DataManager.Vehicles[index].Model ?? string.Empty,
+                DataManager.Vehicles[index].Year ?? 0
+            );
+            vehicleForm.ShowDialog();
+
+            if (vehicleForm.IsSaved)
+            {
+                // Update the vehicle information in DataManager
+                DataManager.UpdateVehicle(index, new VehicleInfo
+                {
+                    Make = vehicleForm.Make,
+                    Model = vehicleForm.Model,
+                    Year = vehicleForm.Year
+                });
+
+                RefreshVehicleIcons();
+            }
+        }
+
+
+        private void DeleteVehicle(int index)
+        {
+            if (index < 0 || index >= DataManager.Vehicles.Count)
+            {
+                MessageBox.Show("Invalid vehicle selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var result = MessageBox.Show("Are you sure you want to delete this vehicle?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                DataManager.RemoveVehicle(index);
+                RefreshVehicleIcons();
+            }
+        }
 
         public void SetFeatureAvailability(string feature, bool isEnabled)
         {
-            switch (feature)
+            if (feature == "day")
             {
-                case "Add Driver":
-                    addDriverBox.Enabled = isEnabled;
-                    break;
+                // Apply daytime mode if enabled, nighttime mode if not
+                this.BackColor = isEnabled ? Color.White : Color.Black;
 
-                case "Add Vehicle":
-                    addVehicleBox.Enabled = isEnabled;
-                    break;
+                foreach (Control control in this.Controls)
+                {
+                    // Use fully qualified name to avoid ambiguity with 'Label'
+                    if (control is System.Windows.Forms.Label || control is Button)
+                    {
+                        control.ForeColor = isEnabled ? Color.Black : Color.White;
+                    }
+                }
+            }
+            else if (feature == "night")
+            {
+                // Apply nighttime mode if enabled (same logic as above, but explicitly checks for "night")
+                this.BackColor = isEnabled ? Color.Black : Color.White;
+
+                foreach (Control control in this.Controls)
+                {
+                    // Use fully qualified name to avoid ambiguity with 'Label'
+                    if (control is System.Windows.Forms.Label || control is Button)
+                    {
+                        control.ForeColor = isEnabled ? Color.White : Color.Black;
+                    }
+                }
             }
         }
+
+
     }
 }

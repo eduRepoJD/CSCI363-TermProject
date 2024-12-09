@@ -117,7 +117,7 @@ namespace CSCI363Project
         {
             if (timeZoneComboBox.SelectedIndex >= 0)
             {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString();
+                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString() ?? "Default Time Zone";
                 selectedTimeZone = TimeZoneInfo.GetSystemTimeZones()
                                                .FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName)
                                                ?? TimeZoneInfo.Local;
@@ -174,7 +174,7 @@ namespace CSCI363Project
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            string feature = checkedListBox1.Items[e.Index].ToString();
+            string feature = checkedListBox1.Items[e.Index]?.ToString() ?? "Unknown Feature";
             bool isEnabled = e.NewValue == CheckState.Checked;
 
             if (FeatureManager.featureStates.ContainsKey(feature))
