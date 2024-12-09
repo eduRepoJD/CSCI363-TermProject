@@ -29,14 +29,17 @@
             labelTime = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
             pictureBox12 = new PictureBox();
-            pictureBox11 = new PictureBox();
             pictureBox13 = new PictureBox();
             panel1 = new Panel();
             label1 = new Label();
             label2 = new Label();
+            timeZoneComboBox = new ComboBox();
+            pictureBox1 = new PictureBox();
+            pictureBox11 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
             SuspendLayout();
             // 
             // flowLayoutDrivers
@@ -110,7 +113,7 @@
             // labelTime
             // 
             labelTime.AutoSize = true;
-            labelTime.Location = new Point(205, 7);
+            labelTime.Location = new Point(163, 8);
             labelTime.Name = "labelTime";
             labelTime.Size = new Size(38, 15);
             labelTime.TabIndex = 7;
@@ -126,20 +129,10 @@
             pictureBox12.Image = (Image)resources.GetObject("pictureBox12.Image");
             pictureBox12.Location = new Point(334, 1);
             pictureBox12.Name = "pictureBox12";
-            pictureBox12.Size = new Size(28, 21);
+            pictureBox12.Size = new Size(0, 0);
             pictureBox12.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox12.TabIndex = 23;
             pictureBox12.TabStop = false;
-            // 
-            // pictureBox11
-            // 
-            pictureBox11.Image = (Image)resources.GetObject("pictureBox11.Image");
-            pictureBox11.Location = new Point(371, 1);
-            pictureBox11.Name = "pictureBox11";
-            pictureBox11.Size = new Size(28, 21);
-            pictureBox11.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox11.TabIndex = 24;
-            pictureBox11.TabStop = false;
             // 
             // pictureBox13
             // 
@@ -178,16 +171,46 @@
             label2.TabIndex = 28;
             label2.Text = "Vehicles";
             // 
+            // timeZoneComboBox
+            // 
+            timeZoneComboBox.FormattingEnabled = true;
+            timeZoneComboBox.Location = new Point(238, 3);
+            timeZoneComboBox.Name = "timeZoneComboBox";
+            timeZoneComboBox.Size = new Size(90, 23);
+            timeZoneComboBox.TabIndex = 43;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(334, 1);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(28, 21);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 44;
+            pictureBox1.TabStop = false;
+            // 
+            // pictureBox11
+            // 
+            pictureBox11.Image = (Image)resources.GetObject("pictureBox11.Image");
+            pictureBox11.Location = new Point(371, 1);
+            pictureBox11.Name = "pictureBox11";
+            pictureBox11.Size = new Size(28, 21);
+            pictureBox11.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox11.TabIndex = 45;
+            pictureBox11.TabStop = false;
+            // 
             // Controls
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(441, 631);
+            Controls.Add(pictureBox11);
+            Controls.Add(pictureBox1);
+            Controls.Add(timeZoneComboBox);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(panel1);
             Controls.Add(pictureBox13);
-            Controls.Add(pictureBox11);
             Controls.Add(pictureBox12);
             Controls.Add(labelTime);
             Controls.Add(dateTimePicker1);
@@ -201,8 +224,9 @@
             Text = "Controls";
             Load += Controls_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -219,10 +243,12 @@
         private System.Windows.Forms.Label labelTime;
         private System.Windows.Forms.Timer timer1;
         private PictureBox pictureBox12;
-        private PictureBox pictureBox11;
         private PictureBox pictureBox13;
         private Panel panel1;
         private Label label1;
         private Label label2;
+        private ComboBox timeZoneComboBox;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox11;
     }
 }

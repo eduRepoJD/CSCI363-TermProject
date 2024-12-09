@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,8 +18,29 @@ namespace CSCI363Project
         public Controls()
         {
             InitializeComponent();
+            ApplyCurrentTheme();
             timer1.Start();
         }
+        private void ApplyCurrentTheme()
+        {
+            this.BackColor = ThemeManager.CurrentBackColor;
+
+            foreach (Control ctrl in Controls)
+            {
+                // Exclude navigation buttons from theme changes
+                if (ctrl == btnMain || ctrl == btnCarInfo || ctrl == btnControls || ctrl == btnSettings)
+                {
+                    continue;
+                }
+
+                // Change ForeColor for other controls
+                if (ctrl is Button || ctrl is System.Windows.Forms.Label)
+                {
+                    ctrl.ForeColor = ThemeManager.CurrentLabelColor;
+                }
+            }
+        }
+
 
         private void Controls_Load(object sender, EventArgs e)
         {
@@ -364,7 +386,6 @@ namespace CSCI363Project
                 }
             }
         }
-
 
     }
 }

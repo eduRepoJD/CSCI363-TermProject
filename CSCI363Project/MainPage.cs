@@ -42,7 +42,7 @@ namespace CSCI363Project
             }
         }
 
-        private void MainPage_Load(object sender, EventArgs e)
+        private void MainPage_Load(object? sender, EventArgs e)
         {
             foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
             {
@@ -197,7 +197,7 @@ namespace CSCI363Project
         {
             if (timeZoneComboBox.SelectedIndex >= 0)
             {
-                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString();
+                string selectedTimeZoneName = timeZoneComboBox.SelectedItem?.ToString() ?? "Default Time Zone";
                 selectedTimeZone = TimeZoneInfo.GetSystemTimeZones()
                                                .FirstOrDefault(tz => tz.DisplayName == selectedTimeZoneName)
                                                ?? TimeZoneInfo.Local;
