@@ -220,6 +220,7 @@
             Controls.Add(btnMain);
             Controls.Add(flowLayoutVehicles);
             Controls.Add(flowLayoutDrivers);
+            Font = new Font("Segoe UI", 9F);
             Name = "Controls";
             Text = "Controls";
             Load += Controls_Load;
